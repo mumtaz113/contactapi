@@ -5,6 +5,7 @@ const user = require('./Model')
 
 require('dotenv').config()
 const contact=async(req,res)=>{
+    
     const{message,name,email,subject}=req.body;
     try {
         await connect(process.env.MONGO_URL)
