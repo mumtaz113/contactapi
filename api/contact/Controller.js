@@ -8,6 +8,18 @@ const contact=async(req,res)=>{
     
     const{message,name,email,subject}=req.body;
     try {
+        const message=req.body.message;
+        const name=req.body.name;
+        const email=req.body.email;
+        const subject=req.body.subject;
+        const newnote=new Note({
+         message, 
+         name,
+         email,
+         subject
+
+        })
+        newnote.save();
         await connect(process.env.MONGO_URL)
         
         const checkexist=await user.exists({email:email})
