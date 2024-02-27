@@ -2,11 +2,37 @@
 
 const { connect } = require('mongoose');
 const user = require('./Model')
-
+const nodemailer=require('nodemailer')
 require('dotenv').config()
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secureConnection: false,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: process.env.SMTP_MAIL,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
 const contact=async(req,res)=>{
-    
+ 
     const{message,name,email,subject}=req.body;
+    const mailoption={
+        from:process.env.SMTP_MAIL,
+        to:email,
+        subject:subject,
+        message:message    
+        }
+        transporter.sendMail(mailoption,function(error,info){
+        if(error)
+        {
+        console.log(error)
+        } 
+        else
+        {
+         console.log('Email Sent SuccesFully')   
+        }   
+        })
     try {
         await connect(process.env.MONGO_URL)
         
